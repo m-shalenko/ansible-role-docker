@@ -1,18 +1,30 @@
 ---
+- name: Docker | Remove all conflicting packages
+  ansible.builtin.apt:
+    name:
+      - docker.io
+      - docker-doc
+      - docker-compose
+      - docker-compose-v2
+      - podman-docker
+      - containerd
+      - runc
+    state: absent
+
 - name: Docker | Install packages
   ansible.builtin.apt:
     name:
       - apt-transport-https
       - ca-certificates
-      - curl
-      - gnupg2
-      - software-properties-common
+      - gnupg
     state: present
     update_cache: true
 
 - name: Docker | Install repo key
   ansible.builtin.apt_key:
     url: "{{ docker_apt_key_url }}"
+    dest: /etc/apt/keyrings/docker.asc
+    mode: "0644"
     state: present
 
 - name: Docker | Add repo
@@ -22,12 +34,7 @@
 
 - name: Docker | Install docker
   ansible.builtin.apt:
-    name:
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
-      - docker-buildx-plugin
-      - docker-compose-plugin
+    name: "{{ docker_apt_packages }}"
     state: present
     update_cache: true
 
