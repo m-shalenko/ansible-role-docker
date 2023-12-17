@@ -33,7 +33,7 @@
 
 - name: Docker | Create docker config
   ansible.builtin.copy:
-    src: "{{ docker_daemon_opts | to_nice_json }}"
+    content: "{{ docker_daemon_opts | to_nice_json }}"
     dest: /etc/docker/daemon.json
     owner: root
     group: root
