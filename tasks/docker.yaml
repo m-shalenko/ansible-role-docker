@@ -1,0 +1,8 @@
+---
+- name: Docker | Gather required facts
+  ansible.builtin.setup:
+    filter: ansible_distribution*
+
+- name: Docker | Install docker on Ubuntu
+  ansible.builtin.import_tasks: ubuntu.yaml
+  when: ansible_distribution == 'Ubuntu'

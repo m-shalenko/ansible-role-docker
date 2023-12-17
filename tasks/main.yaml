@@ -1,0 +1,4 @@
+---
+- name: Docker | Install Docker Engine
+  ansible.builtin.import_tasks: docker.yaml
+  when: docker_role_enabled
