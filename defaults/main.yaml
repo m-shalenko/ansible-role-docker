@@ -1,0 +1,10 @@
+---
+docker_role_enabled: true
+docker_apt_key_url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+docker_apt_repo: "deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+docker_daemon_opts:
+  exec-opts: ["native.cgroupdriver=systemd"]
+  log-driver: "json-file"
+  log-opts:
+    max-size: 100m
+  storage-driver: overlay2
