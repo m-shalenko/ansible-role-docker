@@ -9,7 +9,6 @@ ansible-galaxy role install m-shalenko.docker
 ```
 
 ## Example of playbook
-2) Playbook
 ```yaml
 ---
 - name: Install Docker Engine
