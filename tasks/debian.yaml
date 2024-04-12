@@ -1,0 +1,54 @@
+---
+- name: Docker | Remove all conflicting packages
+  ansible.builtin.apt:
+    name:
+      - docker.io
+      - docker-doc
+      - docker-compose
+      - docker-compose-v2
+      - podman-docker
+      - containerd
+      - runc
+    state: absent
+
+- name: Docker | Install packages
+  ansible.builtin.apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - gnupg
+    state: present
+    update_cache: true
+
+- name: Docker | Create apt keyrings directory
+  ansible.builtin.file:
+    state: directory
+    dest: "{{ docker_apt_keyrings_directory }}"
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Docker | Install repo key
+  ansible.builtin.get_url:
+    url: "{{ docker_apt_key_url }}"
+    dest: "{{ docker_apt_keyrings_directory }}/docker.asc"
+
+- name: Docker | Add repo
+  ansible.builtin.apt_repository:
+    repo: "{{ docker_apt_repo }}"
+    state: present
+
+- name: Docker | Install docker
+  ansible.builtin.apt:
+    name: "{{ docker_apt_packages }}"
+    state: present
+    update_cache: true
+
+- name: Docker | Create docker config
+  ansible.builtin.copy:
+    content: "{{ docker_daemon_opts | to_nice_json }}"
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart docker

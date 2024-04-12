@@ -3,6 +3,6 @@
   ansible.builtin.setup:
     filter: ansible_distribution*
 
-- name: Docker | Install docker on Ubuntu
-  ansible.builtin.import_tasks: ubuntu.yaml
-  when: ansible_distribution == 'Ubuntu'
+- name: Docker | Install docker on debian-based OS
+  ansible.builtin.import_tasks: debian.yaml
+  when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
