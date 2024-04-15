@@ -51,6 +51,7 @@
     owner: root
     group: root
     mode: "0644"
+  notify: Restart docker
 
 - name: Docker | Start systemd service
   ansible.builtin.systemd:
@@ -58,4 +59,3 @@
     enabled: true
     state: started
     daemon_reload: true
-  notify: Restart docker
